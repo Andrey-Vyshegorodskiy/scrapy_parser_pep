@@ -9,7 +9,7 @@ class PepParsePipeline:
     statuses = {}
     total = 0
 
-    def open_spider(self, spider):  # наличие этого метода проверяется при тестировании
+    def open_spider(self, spider):  # метод нужен при тестировании
         pass
 
     def process_item(self, item, spider):
