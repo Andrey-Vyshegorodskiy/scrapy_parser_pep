@@ -10,8 +10,8 @@ class PepSpider(scrapy.Spider):
 
     def parse(self, response):
         for pep_link in response.css(
-                'section#numerical-index td a::attr(href)'):
-            yield response.follow(pep_link, callback=self.parse_pep)
+                'section#numerical-index td a::attr(href)').getall():
+            yield response.follow(pep_link + '/', callback=self.parse_pep)
 
     def parse_pep(self, response):
         title = response.css('h1.page-title::text').get()

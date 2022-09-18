@@ -1,33 +1,37 @@
+import collections
+import csv
 import datetime as dt
 
 from pathlib import Path
 
 BASE_DIR = Path(__file__).parent.parent
+RESULT_DIR = BASE_DIR / 'results'
 
 
 class PepParsePipeline:
-    statuses = {}
-    total = 0
 
-    def open_spider(self, spider):  # метод нужен при тестировании
-        pass
+    def __init__(self):
+        self.statuses = {}
+        # если воспользоваться константой RESULT_DIR - тесты выдают ошибку
+        self.result_dir = BASE_DIR / 'results'
+        self.result_dir.mkdir(exist_ok=True)
+
+    def open_spider(self, spider):
+        self.statuses = collections.defaultdict(int)
 
     def process_item(self, item, spider):
-        if item.get('status'):
-            self.total += 1
-            self.statuses[item['status']] = (
-                self.statuses.get(item['status'], 0) + 1)
+        self.statuses[item['status']] += 1
         return item
 
     def close_spider(self, spider):
-        result_dir = BASE_DIR / 'results'
-        result_dir.mkdir(exist_ok=True)
-        file_path = result_dir / (
+        file_path = self.result_dir / (
             f'status_summary_'
             f'{dt.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.csv'
         )
-        with open(file_path, mode='w', encoding='utf-8') as f:
-            f.write('Статус,Количество\n')
-            for status in self.statuses:
-                f.write(f'{status},{self.statuses[status]}\n')
-            f.write(f'Total,{self.total}\n')
+        with open(file_path, 'w', encoding='utf-8') as f:
+            csv_writer = csv.writer(f, dialect='unix')
+            csv_writer.writerows([
+                ['Статус,Количество'],
+                *self.statuses.items(),
+                ['Total', sum(self.statuses.values())]
+            ])
