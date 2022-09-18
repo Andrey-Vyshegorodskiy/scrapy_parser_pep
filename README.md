@@ -19,8 +19,8 @@ git@github.com:Andrey-Vyshegorodskiy/scrapy_parser_pep.git
 2. Cоздать и активировать виртуальное окружение:
 
 ```
-python3 -m venv env
-source env/bin/activate
+python -m venv venv
+source venv/scripts/activate
 ```
 3. Установить зависимости из файла requirements.txt, который лежит в корне проекта:
 ```
