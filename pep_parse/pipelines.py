@@ -26,12 +26,13 @@ class PepParsePipeline:
             f'{dt.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")}.csv'
         )
         with open(file_path, 'w', encoding='utf-8') as f:
-            csv_writer = csv.writer(
-                f,
+            csv.register_dialect(
+                'pep',
                 delimiter=';',
-                quoting=csv.QUOTE_NONE,
-                lineterminator='\n'
+                lineterminator='\n',
+                quoting=csv.QUOTE_NONE
             )
+            csv_writer = csv.writer(f, dialect='pep')
             csv_writer.writerows([
                 ['Статус,Количество'],
                 *self.statuses.items(),
