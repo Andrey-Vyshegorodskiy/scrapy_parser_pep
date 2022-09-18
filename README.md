@@ -14,7 +14,7 @@
 1. Клонировать репозиторий к себе на компьютер:
 
 ```bash
-git clone git@github.com:sniki-ld/scrapy_parser_pep.git
+git@github.com:Andrey-Vyshegorodskiy/scrapy_parser_pep.git
 ```
 2. Cоздать и активировать виртуальное окружение:
 
